@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+ <!--延展是图片                                              设置当前状态-->
+                                                           <!--选中-->
+ <item android:drawable="@drawable/shape" android:state_checked="true"/>
+                                                            <!--不选中-->
+ <item android:drawable="@drawable/cinema" android:state_checked="false"/>
+ <!--默认             不设置true  和  false   就是默认时的状态-->
+ <item android:drawable="@drawable/cinema" />
+</selector>

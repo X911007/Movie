@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#161B33"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#161B33"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#161B33"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/Positioning"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/dingwei" />
+
+            <TextView
+                android:id="@+id/Positioning_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/Positioning"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/Positioning"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/sousuo" />
+        </RelativeLayout>
+
+        <com.stx.xhb.xbanner.XBanner
+            android:id="@+id/xeanner"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"></com.stx.xhb.xbanner.XBanner>
+
+        <RelativeLayout
+            android:id="@+id/Hot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1E2444"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/Hot_"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/showing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/Hot_"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/Hot_"
+                android:text="正在热映"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="更多"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <!--<com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:layout_marginTop="20dp"
+            android:id="@+id/xRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"></com.jcodecraeer.xrecyclerview.XRecyclerView>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/xRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="240dp"
+            android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/Coming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1E2444"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/Hot__"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/coming_soon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/Hot__"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/Hot__"
+                android:text="即将上映"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="更多"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/releasedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="20dp"></android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/Popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1E2444"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/Popular__"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/popular_movie" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/Popular__"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/Popular__"
+                android:text="热门电影"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="更多"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/hotmovie_tou_item_layout"></include>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/popularRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"></android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+</ScrollView>

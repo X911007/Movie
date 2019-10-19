@@ -18,7 +18,9 @@ import com.bw.movie.bean.BeanLogin;
 import com.bw.movie.contract.Contract;
 import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.Api;
+import com.bw.movie.util.App;
 import com.bw.movie.util.EncryptUtil;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +47,8 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
     Button mLogin;
     @BindView(R.id.login_weixin)
     ImageView mLoginWeixin;
+    @BindView(R.id.login_return)
+    ImageView mLoginReturn;
     private Presenter presenter1;
     private Unbinder bind;
     private Map<String, String> hmap = new HashMap<>();
@@ -61,15 +65,20 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         bind = ButterKnife.bind(this);
+        /*hmap.put(Api.URL_EMAIL, Api.URL_EMAIL_S);
+        hmap.put(Api.URL_PWD, Api.URL_PWD_S);
+        presenter1.getLogin(hmap);*/
     }
 
     //点击
-    @OnClick({R.id.login_code, R.id.login_t_registered, R.id.login, R.id.login_weixin})
+    @OnClick({R.id.login_code, R.id.login_t_registered, R.id.login, R.id.login_weixin, R.id.login_return})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.login_code://获取验证码
+            case R.id.login_code://忘记密码
                 break;
             case R.id.login_t_registered://注册
+                startActivity(new Intent(LogInActivity.this, RegisteredActivity.class));
+                finish();
                 break;
             case R.id.login://登录
                 String name = mLoginName.getText().toString().trim();
@@ -82,15 +91,29 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
                     Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                hmap.put(Api.URL_EMAIL,Api.URL_EMAIL_S);
-                hmap.put(Api.URL_PWD,Api.URL_PWD_S);
-//                String encrypt = EncryptUtil.encrypt(pwd);
-                presenter1.getData(hmap);
-
+                //加密
+                String encrypt = EncryptUtil.encrypt(pwd);
+                Log.i("bbb", "onViewClicked: " + encrypt);
+                hmap.put(Api.URL_EMAIL, name);
+                hmap.put(Api.URL_PWD, encrypt);
+                presenter1.getLogin(hmap);
                 break;
             case R.id.login_weixin://微信登录
+                getWeixin();
+                break;
+            case R.id.login_return://返回
+                finish();
                 break;
         }
+    }
+    //唤起微信
+    private void getWeixin() {
+        // send oauth request
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+
+        App.api.sendReq(req);
     }
 
     @Override
@@ -108,10 +131,11 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
 
     //成功
     @Override
-    public void onSuccrss(Object object) {
-        BeanLogin beanLogin= (BeanLogin) object;
-        Log.i("aaa", "onSuccrss: "+beanLogin.getMessage());
-        if ("0000".equals(beanLogin.getStatus())){
+    public void onSuccess(Object object) {
+        BeanLogin beanLogin = (BeanLogin) object;
+        Log.i("aaa", "onSuccrss: " + beanLogin.getMessage());
+        Toast.makeText(this, "" + beanLogin.getMessage(), Toast.LENGTH_SHORT).show();
+        if ("0000".equals(beanLogin.getStatus())) {
             startActivity(new Intent(LogInActivity.this, ShowActivity.class));
             finish();
         }

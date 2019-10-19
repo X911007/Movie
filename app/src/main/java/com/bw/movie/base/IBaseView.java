@@ -6,6 +6,6 @@ package com.bw.movie.base;
  * function：
  */
 public interface IBaseView {
-    void onSuccrss(Object object);
+    void onSuccess(Object object);
     void onFailure(String failure);
 }

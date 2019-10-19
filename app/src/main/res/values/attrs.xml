@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ViewSearchBarBack">
+        <attr name="hint_" format="string"></attr>
+        <attr name="hint_color" format="color"></attr>
+        <attr name="text_size" format="dimension"></attr>
+        <attr name="text_color" format="color"></attr>
+        <attr name="img_" format="reference"></attr>
+    </declare-styleable>
+</resources>

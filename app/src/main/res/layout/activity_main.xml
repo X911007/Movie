@@ -7,20 +7,33 @@
     android:orientation="vertical"
     tools:context=".activity.LogInActivity">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@mipmap/a" />
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/a" />
+
+        <ImageView
+            android:id="@+id/login_return"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/back"
+            android:layout_marginTop="47dp"
+            android:layout_marginLeft="28dp"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_weight="1"
         android:background="#161B33"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
         <EditText
             android:id="@+id/login_name"
@@ -56,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/inputbox5"
-                android:text="获取验证码" />
+                android:text="忘记密码" />
         </RelativeLayout>
 
         <TextView

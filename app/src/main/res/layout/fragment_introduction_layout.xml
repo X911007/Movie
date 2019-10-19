@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#161B33"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#161B33"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/Introduction_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剧情简介"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/Introduction_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="内容"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Introduction_Castmember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="演职人员"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/Introduction_director"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="导演（人数）"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <!--<LinearLayout
+            android:id="@+id/Introduction_director_lin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"></LinearLayout>-->
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/Introduction_director_RecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/Introduction_actor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="演员（人数）"
+            android:textColor="#fff"
+            android:textSize="15sp" />
+
+        <!--<LinearLayout
+            android:id="@+id/Introduction_actor_lin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"></LinearLayout>-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/Introduction_actor_RecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+</ScrollView>
