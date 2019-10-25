@@ -2,7 +2,9 @@ package com.bw.movie.adapter;
 
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.bw.movie.R;
 import com.bw.movie.bean.BeanFindMoviesDetail;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,6 +20,9 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
  * function：预告适配器(视频)
  */
 public class TrailNotice extends BaseQuickAdapter<BeanFindMoviesDetail.ResultBean.ShortFilmListBean, BaseViewHolder> {
+
+    private JCVideoPlayer jcVideoPlayer;
+
     public TrailNotice(int layoutResId, @Nullable List<BeanFindMoviesDetail.ResultBean.ShortFilmListBean> data) {
         super(layoutResId, data);
     }
@@ -26,8 +31,22 @@ public class TrailNotice extends BaseQuickAdapter<BeanFindMoviesDetail.ResultBea
     protected void convert(BaseViewHolder helper, BeanFindMoviesDetail.ResultBean.ShortFilmListBean item) {
         //设置视频
         //找控件
-        JCVideoPlayer jcVideoPlayer = helper.itemView.findViewById(R.id.TrailNotice_item_JCVideoPlayer);
+        jcVideoPlayer = helper.itemView.findViewById(R.id.TrailNotice_item_JCVideoPlayer);
+        //视频预览图
+        ImageView ivThumb = jcVideoPlayer.ivThumb;
+        ivThumb.setScaleType(ImageView.ScaleType.FIT_XY);
+        Glide.with(helper.itemView.getContext())
+                .load(item.getImageUrl())
+                .into(ivThumb);
         //设置数据
         jcVideoPlayer.setUp(item.getVideoUrl(),null);
+
+    }
+    public interface CallBackJCVideoPlayer{
+        void onSuccess(JCVideoPlayer jcVideoPlayer);
+    }
+    //停止播放
+    public void getJcVideoPlayer(){
+        jcVideoPlayer.releaseAllVideos();
     }
 }

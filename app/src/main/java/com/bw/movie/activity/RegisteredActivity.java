@@ -83,13 +83,14 @@ public class RegisteredActivity extends BaseActivity implements Contract.HomeVie
         //默认密码输入框隐藏密码
         Log.i("ccc", "initPresenter: " + showpwd);
         //mRegisteredPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        mShowPwd.setVisibility(View.GONE);
         //密码输入框的监听
         mRegisteredPwd.addTextChangedListener(new TextWatcher() {
             //输入前
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 mEmptyPwd.setVisibility(View.GONE);
-
+                mShowPwd.setVisibility(View.GONE);
             }
 
             //输入框输入改变监听
@@ -98,6 +99,7 @@ public class RegisteredActivity extends BaseActivity implements Contract.HomeVie
                 String pwd_s = mRegisteredPwd.getText().toString().trim();
                 if (!TextUtils.isEmpty(pwd_s)) {
                     mEmptyPwd.setVisibility(View.VISIBLE);
+                    mShowPwd.setVisibility(View.VISIBLE);
                 }
             }
 

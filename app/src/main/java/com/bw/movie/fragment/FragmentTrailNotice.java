@@ -19,6 +19,7 @@ import com.bw.movie.bean.BeanFindMoviesDetail;
 import com.bw.movie.bean.BeanReleaseMovie;
 import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.Api;
+import com.bw.movie.util.RxJavaUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,6 +42,7 @@ public class FragmentTrailNotice extends BaseFragment implements IBaseView {
     Unbinder unbinder;
     private Presenter presenter;
     private static final String TAG = "FragmentTrailNotice";
+    private TrailNotice trailNotice;
 
     //布局
     @Override
@@ -71,7 +73,7 @@ public class FragmentTrailNotice extends BaseFragment implements IBaseView {
         String videoUrl = shortFilmList.get(0).getVideoUrl();
         Log.i(TAG, "getData: "+videoUrl);
         //设置适配器
-        TrailNotice trailNotice = new TrailNotice(R.layout.trailnotice_recyclerview_item_layout,shortFilmList);
+        trailNotice = new TrailNotice(R.layout.trailnotice_recyclerview_item_layout,shortFilmList);
         //设置管理器
         mTrailNoticeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mTrailNoticeRecyclerView.setAdapter(trailNotice);
@@ -107,5 +109,6 @@ public class FragmentTrailNotice extends BaseFragment implements IBaseView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        trailNotice.getJcVideoPlayer();
     }
 }

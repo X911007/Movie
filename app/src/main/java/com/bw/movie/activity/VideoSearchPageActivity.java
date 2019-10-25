@@ -121,19 +121,19 @@ public class VideoSearchPageActivity extends BaseActivity implements IBaseView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Videosearchpage_recommend://正在热映
-                Toast.makeText(this, "正在热映", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "正在热映", Toast.LENGTH_SHORT).show();
                 mVpVideosearchpage.setCurrentItem(0);
                 break;
             case R.id.Videosearchpage_Cinema://即将上映
-                Toast.makeText(this, "即将上映", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "即将上映", Toast.LENGTH_SHORT).show();
                 mVpVideosearchpage.setCurrentItem(1);
                 break;
             case R.id.Videosearchpage_region://热门电影
-                Toast.makeText(this, "热门电影", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "热门电影", Toast.LENGTH_SHORT).show();
                 mVpVideosearchpage.setCurrentItem(2);
                 break;
             case R.id.searchfor_back://返回键
-                Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
         }

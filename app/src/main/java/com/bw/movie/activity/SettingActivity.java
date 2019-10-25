@@ -1,11 +1,14 @@
 package com.bw.movie.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
@@ -13,11 +16,13 @@ import com.bw.movie.base.BaseActivity;
 import com.bw.movie.base.BasePresenter;
 import com.bw.movie.base.IBaseView;
 import com.bw.movie.presenter.Presenter;
+import com.bw.movie.util.Api;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 //设置
 public class SettingActivity extends BaseActivity implements IBaseView {
 
@@ -31,6 +36,8 @@ public class SettingActivity extends BaseActivity implements IBaseView {
     LinearLayout mSettingPassword;
     @BindView(R.id.setting_back_login)
     LinearLayout mSettingBackLogin;
+    @BindView(R.id.setting_size)
+    TextView mSettingSize;
     private Unbinder bind;
     private Presenter presenter;
     private static final String TAG = "SettingActivity";
@@ -52,24 +59,33 @@ public class SettingActivity extends BaseActivity implements IBaseView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.serring_back://返回
-                Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "返回", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
             case R.id.setting_Cache://清除缓存
                 Toast.makeText(this, "清除缓存", Toast.LENGTH_SHORT).show();
-
+                mSettingSize.setText(0+"");
                 break;
             case R.id.setting_Update://版本更新
                 Toast.makeText(this, "版本更新", Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.setting_password://重置密码
                 Toast.makeText(this, "重置密码", Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.setting_back_login://退出登录
                 Toast.makeText(this, "退出登录", Toast.LENGTH_SHORT).show();
-
+                //清空sp
+                SharedPreferences sharedPreferences = getSharedPreferences(Api.SP_SP, MODE_PRIVATE);
+                sharedPreferences.edit()
+                        .remove(Api.SP_IDENTIFICATION)
+                        .remove(Api.SP_USERID)
+                        .remove(Api.SP_SESSIONID)
+                        .commit();
+                //重新登录
+                startActivity(new Intent(this, LogInActivity.class));
+                //关闭指定页面
+                ShowActivity.shutdown.finish();
+                finish();
                 break;
         }
     }
@@ -86,17 +102,20 @@ public class SettingActivity extends BaseActivity implements IBaseView {
     public void initData() {
 
     }
+
     //成功
     @Override
     public void onSuccess(Object object) {
-        Log.i(TAG, "onSuccess: "+object.toString());
+        Log.i(TAG, "onSuccess: " + object.toString());
     }
+
     //失败
     @Override
     public void onFailure(String failure) {
-        Log.i(TAG, "onFailure: "+failure);
-        Toast.makeText(this, ""+failure, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onFailure: " + failure);
+        Toast.makeText(this, "" + failure, Toast.LENGTH_SHORT).show();
     }
+
     //释放
     @Override
     protected void onDestroy() {

@@ -4,15 +4,21 @@ import android.util.Log;
 
 import com.bw.movie.base.IBaseView;
 import com.bw.movie.bean.BeanBanner;
+import com.bw.movie.bean.BeanBuyMovieTickets;
 import com.bw.movie.bean.BeanComingSoonMovie;
 import com.bw.movie.bean.BeanEmail;
 import com.bw.movie.bean.BeanFindAllMovieComment;
+import com.bw.movie.bean.BeanFindMovieSchedule;
 import com.bw.movie.bean.BeanFindMoviesDetail;
+import com.bw.movie.bean.BeanFindNearbyCinemas;
 import com.bw.movie.bean.BeanFindRecommendCinemas;
+import com.bw.movie.bean.BeanFindSeatInfo;
 import com.bw.movie.bean.BeanHotMovie;
 import com.bw.movie.bean.BeanLogin;
+import com.bw.movie.bean.BeanPay;
 import com.bw.movie.bean.BeanRegistered;
 import com.bw.movie.bean.BeanReleaseMovie;
+import com.bw.movie.bean.BeanWeChatBindingLogin;
 import com.bw.movie.contract.Contract;
 import com.bw.movie.databean.DataBeanMovie;
 import com.bw.movie.util.RxJavaUtil;
@@ -47,7 +53,7 @@ public class Presenter extends Contract.ContractPresenter {
                 .subscribe(new Consumer<BeanLogin>() {
                     @Override
                     public void accept(BeanLogin beanLogin) throws Exception {
-                        Log.i(TAG, "beanLogin: " + beanLogin.getMessage());
+                        Log.i(TAG, "beanLoginssssssss: " + beanLogin.getMessage());
                         if (iBaseView != null) {
                             iBaseView.onSuccess(beanLogin);
                         }
@@ -61,6 +67,31 @@ public class Presenter extends Contract.ContractPresenter {
                     }
                 });
 
+    }
+    //微信登录
+    @Override
+    public void getWeChatBindingLogin(Map<String, String> wxmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getWeChatBindingLogin(wxmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanWeChatBindingLogin>() {
+                    @Override
+                    public void accept(BeanWeChatBindingLogin beanWeChatBindingLogin) throws Exception {
+                        Log.i(TAG, "accept: "+beanWeChatBindingLogin.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanWeChatBindingLogin);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
     }
 
     //注册
@@ -273,20 +304,155 @@ public class Presenter extends Contract.ContractPresenter {
                     }
                 });
     }
+
     //推荐影院
     @Override
     public void getFindRecommendCinemas(Map<String, String> hmap, Map<String, Integer> qmap) {
         RxJavaUtil.getInstance()
                 .getIApi()
-                .getFindRecommendCinemas(hmap,qmap)
+                .getFindRecommendCinemas(hmap, qmap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BeanFindRecommendCinemas>() {
                     @Override
                     public void accept(BeanFindRecommendCinemas beanFindRecommendCinemas) throws Exception {
-                        Log.i(TAG, "accept: "+beanFindRecommendCinemas.getMessage());
+                        Log.i(TAG, "accept: " + beanFindRecommendCinemas.getMessage());
                         if (iBaseView != null) {
                             iBaseView.onSuccess(beanFindRecommendCinemas);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
+    }
+
+    //根据电影ID和影院ID查询电影排期列表
+    @Override
+    public void getFindMovieSchedule(Map<String, Integer> qmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getFindMovieSchedule(qmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanFindMovieSchedule>() {
+                    @Override
+                    public void accept(BeanFindMovieSchedule beanFindMovieSchedule) throws Exception {
+                        Log.i(TAG, "111111111111accept: " + beanFindMovieSchedule.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanFindMovieSchedule);
+                            /*RxJavaUtil.getInstance().getMovie().setMovieName("");
+                            RxJavaUtil.getInstance().getMovie().setVideoPath("");
+                            RxJavaUtil.getInstance().getMovie().setCinemaId(0);
+                            RxJavaUtil.getInstance().getMovie().setMovieId(0);
+//                            RxJavaUtil.getInstance().getMovie().setMovieId();*/
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
+    }
+
+    //查询附近影院
+    @Override
+    public void getFindNearbyCinemas(Map<String, String> hmap, Map<String, Object> qmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getFindNearbyCinemas(hmap, qmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanFindNearbyCinemas>() {
+                    @Override
+                    public void accept(BeanFindNearbyCinemas beanFindNearbyCinemas) throws Exception {
+                        Log.i(TAG, "222222accept: " + beanFindNearbyCinemas.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanFindNearbyCinemas);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.i(TAG, "eeeeeeeeeeeeaccept: " + throwable.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
+    }
+
+    //根据影厅id 查询座位信息
+    @Override
+    public void getFindSeatInfo(Map<String, Integer> qmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getFindSeatInfo(qmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanFindSeatInfo>() {
+                    @Override
+                    public void accept(BeanFindSeatInfo beanFindSeatInfo) throws Exception {
+                        Log.i(TAG, "rrrrrrrraccept: " + beanFindSeatInfo.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanFindSeatInfo);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
+    }
+    //购票下单
+    @Override
+    public void getBuyMovieTickets(Map<String, String> hmap, Map<String, Object> qmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getBuyMovieTickets(hmap,qmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanBuyMovieTickets>() {
+                    @Override
+                    public void accept(BeanBuyMovieTickets beanBuyMovieTickets) throws Exception {
+                        Log.i(TAG, "accept: "+beanBuyMovieTickets.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanBuyMovieTickets);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (iBaseView != null) {
+                            iBaseView.onFailure(throwable.getMessage());
+                        }
+                    }
+                });
+    }
+    //支付
+    @Override
+    public void getPay(Map<String, String> hmap, Map<String, Object> qmap) {
+        RxJavaUtil.getInstance()
+                .getIApi()
+                .getPay(hmap,qmap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<BeanPay>() {
+                    @Override
+                    public void accept(BeanPay beanPay) throws Exception {
+                        Log.i(TAG, "accept: "+beanPay.getMessage());
+                        if (iBaseView != null) {
+                            iBaseView.onSuccess(beanPay);
                         }
                     }
                 }, new Consumer<Throwable>() {

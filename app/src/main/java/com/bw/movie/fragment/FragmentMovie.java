@@ -1,6 +1,8 @@
 package com.bw.movie.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +28,9 @@ import com.bw.movie.base.BaseFragment;
 import com.bw.movie.bean.BeanBanner;
 import com.bw.movie.bean.BeanComingSoonMovie;
 import com.bw.movie.bean.BeanHotMovie;
+import com.bw.movie.bean.BeanMovie;
 import com.bw.movie.bean.BeanReleaseMovie;
+import com.bw.movie.bean.BeanWeChatBindingLogin;
 import com.bw.movie.contract.Contract;
 import com.bw.movie.databean.DataBeanMovie;
 import com.bw.movie.presenter.Presenter;
@@ -88,8 +92,11 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
     private List<String> listBanner = new ArrayList<>();
     private static final String TAG = "FragmentMovie";
     private Map<String, Integer> qmap = new HashMap<>();
+    private Map<String, Integer> jmap = new HashMap<>();
     private Map<String, String> hmap = new HashMap<>();
     private Map<String, Integer> qqmap = new HashMap<>();
+    //private Map<String, String> wxmap = new HashMap<>();
+    //数据库表
     private DataBeanMovie dataBeanMovie =new DataBeanMovie();
 
     //布局
@@ -98,7 +105,6 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
         return R.layout.fragment_movie_layout;
     }
 
-
     //注册
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,43 +112,19 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         unbinder = ButterKnife.bind(this, rootView);
+        //定位方法
+        getPositioningMethod();
         return rootView;
     }
-
 
     //点击（更多）
     @OnClick({R.id.Positioning, R.id.Positioning_text, R.id.search, R.id.Hot, R.id.Coming, R.id.Popular})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Positioning:
-                Toast.makeText(getContext(), "已定位", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "已定位", Toast.LENGTH_SHORT).show();
                 //定位方法
-                AMapLocationUtil.getLoaction(new AMapLocationUtil.AMapInterface() {
-                    @Override
-                    public void getAMapLocation(AMapLocation aMapLocation) {
-                        if (aMapLocation != null) {
-                            if (aMapLocation.getErrorCode() == 0) {
-                                //可在其中解析amapLocation获取相应内容。
-                                //城市
-                                String city = aMapLocation.getCity();
-                                //区
-                                String district = aMapLocation.getDistrict();
-                                //街道
-                                String street = aMapLocation.getStreet();
-                                //街号
-                                String streetNum = aMapLocation.getStreetNum();
-                                Log.i(TAG, "111111111getAMapLocation: " + aMapLocation.getCity());
-                                Toast.makeText(getContext(), "" + city + district + street + streetNum, Toast.LENGTH_SHORT).show();
-                                mPositioningText.setText(city + district + street + streetNum);
-                            } else {
-                                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                                Log.e("AmapError", "location Error, ErrCode:"
-                                        + aMapLocation.getErrorCode() + ", errInfo:"
-                                        + aMapLocation.getErrorInfo());
-                            }
-                        }
-                    }
-                });
+                getPositioningMethod();
                 break;
             case R.id.search:
                 Toast.makeText(getContext(), "已搜索", Toast.LENGTH_SHORT).show();
@@ -160,6 +142,41 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
                 getContext().startActivity(new Intent(getContext(), VideoSearchPageActivity.class));
                 break;
         }
+    }
+    //定位方法
+    private void getPositioningMethod() {
+        AMapLocationUtil.getLoaction(new AMapLocationUtil.AMapInterface() {
+            @Override
+            public void getAMapLocation(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        //可在其中解析amapLocation获取相应内容。
+                                /*//纬度
+                                double latitude = aMapLocation.getLatitude();
+                                Log.i(TAG, "getAMapLocation纬度: "+latitude);
+                                //经度
+                                double longitude = aMapLocation.getLongitude();
+                                Log.i(TAG, "getAMapLocation经度: 经度"+longitude);*/
+                        //城市
+                        String city = aMapLocation.getCity();
+                        //区
+                        String district = aMapLocation.getDistrict();
+                        //街道
+                        String street = aMapLocation.getStreet();
+                        //街号
+                        String streetNum = aMapLocation.getStreetNum();
+                        Log.i(TAG, "111111111getAMapLocation: " + aMapLocation.getCity());
+                        Toast.makeText(getContext(), "" + city + district + street + streetNum, Toast.LENGTH_SHORT).show();
+                        mPositioningText.setText(city + district + street + streetNum);
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        Log.e("AmapError", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        });
     }
 
 
@@ -270,21 +287,28 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
         qmap.put(Api.URL_COUNT, 5);
         presenter.getReleaseMovie(qmap);
         //即将上映
+        jmap.put(Api.URL_PAGE, 1);
+        jmap.put(Api.URL_COUNT, 3);
         hmap.put(Api.URL_USERID, Api.URL_USERID_S);
         hmap.put(Api.URL_SESSIONID, Api.URL_SESSIONID_S);
-        presenter.getComingSoonMovie(hmap, qmap);
+        presenter.getComingSoonMovie(hmap, jmap);
         //热门电影
         qqmap.put(Api.URL_PAGE, 1);
         qqmap.put(Api.URL_COUNT, 3);
         presenter.getHotMovie(qqmap);
+        /*//微信登录
+        SharedPreferences sp = getContext().getSharedPreferences(Api.SP_SP, Context.MODE_PRIVATE);
+        String code = sp.getString(Api.SP_CODE, "");
+        wxmap.put(Api.SP_CODE,code);
+        presenter.getWeChatBindingLogin(wxmap);*/
 
     }
 
     //成功
     @Override
     public void onSuccess(Object object) {
-        //轮播图
         if (object instanceof BeanBanner) {
+            //轮播图
             BeanBanner beanBanner = (BeanBanner) object;
             //转成json
             String jsonBanner = new Gson().toJson(beanBanner);
@@ -310,7 +334,7 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
                 }
             });
             //切换特效
-//            mXeanner.setPageTransformer(Transformer.Accordion);
+//            mXeanner.setPageTransformer(Transformer.Cube);
             mXeanner.setPageTransformer(Transformer.Depth);
             //播放间隔
             mXeanner.setmAutoPalyTime(2000);
@@ -325,8 +349,8 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
             });
             //开始轮播
             mXeanner.startAutoPlay();
-            //正在热映
         } else if (object instanceof BeanReleaseMovie) {
+            //正在热映
             BeanReleaseMovie beanReleaseMovie = (BeanReleaseMovie) object;
             //解析
             String jsonReleaseMovie = new Gson().toJson(beanReleaseMovie);
@@ -356,21 +380,26 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
             hotXRecyclerView.setCallBackTickets(new HotRecyclerView.CallBackTickets() {
                 @Override
                 public void onTickets(BeanReleaseMovie.ResultBean bean) {
-                    Toast.makeText(getContext(), "" + bean.getMovieId(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "电影ID" + bean.getMovieId(), Toast.LENGTH_SHORT).show();
                     //EventBus传值
                     EventBus.getDefault().postSticky(bean);
-                    //跳转
+                    //已选择的电影id
+                    RxJavaUtil.getInstance().getMovie().setMovieId(bean.getMovieId());
+                    //已选择的电影名
+                    RxJavaUtil.getInstance().getMovie().setMovieName(bean.getName());
+                    //跳转到电影详情
                     getActivity().startActivity(new Intent(getContext(), MoviedetailspageActivity.class));
                 }
             });
-            //即将上映
         } else if (object instanceof BeanComingSoonMovie) {
+            //即将上映
             BeanComingSoonMovie beanComingSoonMovie = (BeanComingSoonMovie) object;
             String jsonComingSoonMovie = new Gson().toJson(beanComingSoonMovie);
             //存入表
             dataBeanMovie.setJsonComingSoonMovie(jsonComingSoonMovie);
             //转成list
             List<BeanComingSoonMovie.ResultBean> beanComingSoonMovielist = beanComingSoonMovie.getResult();
+            Log.i(TAG, "即将上映的集合长度onSuccess: "+beanComingSoonMovielist.size());
             Log.i(TAG, "onSuccess:11111 " + beanComingSoonMovie.getResult().get(0).getName());
             //设置适配器
             ReleasedRecyclerView releasedRecyclerView = new ReleasedRecyclerView(beanComingSoonMovielist, getContext());
@@ -388,8 +417,8 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
                     Toast.makeText(getContext(), "已预约" + bean.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
-            //热门电影
         } else if (object instanceof BeanHotMovie) {
+            //热门电影
             BeanHotMovie beanHotMovie = (BeanHotMovie) object;
             String jsonHotMovie = new Gson().toJson(beanHotMovie);
             //存入表
@@ -412,6 +441,14 @@ public class FragmentMovie extends BaseFragment implements Contract.HomeView {
                     Toast.makeText(getContext(), "已购票" + bean.getName(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }else if (object instanceof BeanWeChatBindingLogin){
+           /* //微信登录
+            BeanWeChatBindingLogin beanWeChatBindingLogin= (BeanWeChatBindingLogin) object;
+            BeanWeChatBindingLogin.ResultBean beanWeChatBindingLoginResult = beanWeChatBindingLogin.getResult();
+            //Log.i(TAG, "onSuccess: "+beanWeChatBindingLoginResult.getUserInfo().getNickName());
+            Toast.makeText(getContext(), "微信登录成功", Toast.LENGTH_SHORT).show();
+            //传值
+            EventBus.getDefault().postSticky(beanWeChatBindingLogin);*/
         }
         //存入数据库
         RxJavaUtil.getInstance().getDaoSession().getDataBeanMovieDao().insertOrReplace(dataBeanMovie);

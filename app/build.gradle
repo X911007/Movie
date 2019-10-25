@@ -107,7 +107,7 @@ dependencies {
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
     //视频播放(节操)
     implementation 'fm.jiecao:jiecaovideoplayer:2.0'
-    //地图（定位）
+    //高德地图（定位）
     implementation 'com.amap.api:location:latest.integration'
     //快速适配器
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'

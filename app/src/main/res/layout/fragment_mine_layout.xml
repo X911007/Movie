@@ -63,11 +63,13 @@
                 android:padding="10dp">
 
                 <ImageView
+                    android:id="@+id/mine_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/jiaban" />
 
                 <TextView
+                    android:id="@+id/mine_name_"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

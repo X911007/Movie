@@ -23,6 +23,7 @@ import com.bw.movie.base.BaseActivity;
 import com.bw.movie.base.BasePresenter;
 import com.bw.movie.base.IBaseView;
 import com.bw.movie.bean.BeanFindMoviesDetail;
+import com.bw.movie.bean.BeanMovie;
 import com.bw.movie.bean.BeanReleaseMovie;
 import com.bw.movie.fragment.FragmentFilmReview;
 import com.bw.movie.fragment.FragmentIntroduction;
@@ -30,6 +31,7 @@ import com.bw.movie.fragment.FragmentStills;
 import com.bw.movie.fragment.FragmentTrailNotice;
 import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.Api;
+import com.bw.movie.util.RxJavaUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,6 +87,7 @@ public class MoviedetailspageActivity extends BaseActivity implements IBaseView 
     private Map<String, Integer> qmap = new HashMap<>();
     private Map<String, String> hmap = new HashMap<>();
     private Presenter presenter;
+    private int movieId;
 
     //布局
     @Override
@@ -120,31 +123,12 @@ public class MoviedetailspageActivity extends BaseActivity implements IBaseView 
         //设置预加载
         mMoviedetailspageVp.setOffscreenPageLimit(4);
     }
-
-    //点击
-    @OnClick({R.id.Moviedetailspage_back, R.id.Moviedetailspage_lin, R.id.Moviedetailspage_Filmreview, R.id.Moviedetailspage_Selection})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.Moviedetailspage_back://返回
-                finish();
-                break;
-            case R.id.Moviedetailspage_lin://线性布局
-
-                break;
-            case R.id.Moviedetailspage_Filmreview://影评
-                break;
-            case R.id.Moviedetailspage_Selection://选座
-                Intent intent = new Intent(this, ShowActivity.class);
-                intent.putExtra("推荐",0);
-                startActivity(intent);
-                break;
-        }
-    }
     //接收EventBus    bean
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getDataBean(BeanReleaseMovie.ResultBean bean) {
         if (bean!=null) {
-            int movieId = bean.getMovieId();
+            //电影id
+            movieId = bean.getMovieId();
             qmap.put(Api.URL_MOVIEID, movieId);
             hmap.put(Api.URL_USERID, Api.URL_USERID_S);
             hmap.put(Api.URL_SESSIONID, Api.URL_SESSIONID_S);
@@ -152,6 +136,34 @@ public class MoviedetailspageActivity extends BaseActivity implements IBaseView 
 
         }
     }
+    //点击
+    @OnClick({R.id.Moviedetailspage_back, R.id.Moviedetailspage_lin, R.id.Moviedetailspage_Filmreview, R.id.Moviedetailspage_Selection})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.Moviedetailspage_back://返回
+                //Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+            case R.id.Moviedetailspage_lin://线性布局
+                break;
+            case R.id.Moviedetailspage_Filmreview://影评
+                Toast.makeText(this, "以点击影评", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Moviedetailspage_Selection://选座
+                //Toast.makeText(this, "以点击选座", Toast.LENGTH_SHORT).show();
+                /*Intent intent = new Intent(this, ShowActivity.class);
+                intent.putExtra("推荐",1);
+//                EventBus.getDefault().postSticky(BeanReleaseMovie.ResultBean );
+                startActivity(intent);*/
+                //存入显示的页数
+                BeanMovie movie = RxJavaUtil.getInstance().getMovie();
+                movie.setNumberofpages(1);
+                EventBus.getDefault().postSticky(movie);
+                finish();
+                break;
+        }
+    }
+
     //对象
     @Override
     public BasePresenter initPresenter() {
@@ -204,9 +216,13 @@ public class MoviedetailspageActivity extends BaseActivity implements IBaseView 
         //导演
         List<BeanFindMoviesDetail.ResultBean.MovieDirectorBean> movieDirectorBeanList = bean.getMovieDirector();
         EventBus.getDefault().postSticky(movieDirectorBeanList);
-
-
         EventBus.getDefault().postSticky(bean);
+        //已选择电影名
+        RxJavaUtil.getInstance().getMovie().setMovieName(bean.getName());
+        //已选择电影视频
+        RxJavaUtil.getInstance().getMovie().setVideoPath(shortFilmList.get(0).getVideoUrl());
+        //已选择电影视频默认显示图片
+        RxJavaUtil.getInstance().getMovie().setVideoPathImg(shortFilmList.get(0).getImageUrl());
 
 
     }

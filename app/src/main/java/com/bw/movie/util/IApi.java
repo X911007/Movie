@@ -1,15 +1,21 @@
 package com.bw.movie.util;
 
 import com.bw.movie.bean.BeanBanner;
+import com.bw.movie.bean.BeanBuyMovieTickets;
 import com.bw.movie.bean.BeanComingSoonMovie;
 import com.bw.movie.bean.BeanEmail;
 import com.bw.movie.bean.BeanFindAllMovieComment;
+import com.bw.movie.bean.BeanFindMovieSchedule;
 import com.bw.movie.bean.BeanFindMoviesDetail;
+import com.bw.movie.bean.BeanFindNearbyCinemas;
 import com.bw.movie.bean.BeanFindRecommendCinemas;
+import com.bw.movie.bean.BeanFindSeatInfo;
 import com.bw.movie.bean.BeanLogin;
 import com.bw.movie.bean.BeanHotMovie;
+import com.bw.movie.bean.BeanPay;
 import com.bw.movie.bean.BeanRegistered;
 import com.bw.movie.bean.BeanReleaseMovie;
+import com.bw.movie.bean.BeanWeChatBindingLogin;
 
 import java.util.Map;
 
@@ -31,6 +37,11 @@ public interface IApi {
     @FormUrlEncoded
     @POST(Api.URL_LOGIN)
     Observable<BeanLogin> getLogin(@FieldMap Map<String, String> loginmap);
+
+    //微信登录
+    @FormUrlEncoded
+    @POST(Api.URL_WECHATBINDINGLOGIN)
+    Observable<BeanWeChatBindingLogin> getWeChatBindingLogin(@FieldMap Map<String, String> weloginmap);
 
     //注册
     @FormUrlEncoded
@@ -69,5 +80,27 @@ public interface IApi {
     //推荐影院
     @GET(Api.URL_FINDRECOMMENDCINEMAS)
     Observable<BeanFindRecommendCinemas> getFindRecommendCinemas(@HeaderMap Map<String, String> hmap, @QueryMap Map<String, Integer> qmap);
+
+    //根据电影ID和影院ID查询电影排期列表
+    @GET(Api.URL_FINDMOVIESCHEDULE)
+    Observable<BeanFindMovieSchedule> getFindMovieSchedule(@QueryMap Map<String, Integer> qmap);
+
+    //查询附近影院
+    @GET(Api.URL_FINDNEARBYCINEMAS)
+    Observable<BeanFindNearbyCinemas> getFindNearbyCinemas(@HeaderMap Map<String, String> hmap, @QueryMap Map<String, Object> qmap);
+
+   //根据影厅id 查询座位信息
+    @GET(Api.URL_FINDSEATINFO)
+    Observable<BeanFindSeatInfo> getFindSeatInfo(@QueryMap Map<String, Integer> qmap);
+
+    //购票下单
+    @FormUrlEncoded
+    @POST(Api.URL_BUYMOVIETICKETS)
+    Observable<BeanBuyMovieTickets> getBuyMovieTickets(@HeaderMap Map<String, String> hmap,@FieldMap Map<String, Object> loginmap);
+
+    //支付
+    @FormUrlEncoded
+    @POST(Api.URL_PAY)
+    Observable<BeanPay> getPay(@HeaderMap Map<String, String> hmap, @FieldMap Map<String, Object> zmap);
 
 }

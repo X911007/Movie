@@ -17,10 +17,14 @@ import com.bw.movie.R;
 import com.bw.movie.adapter.Cinema;
 import com.bw.movie.base.BaseFragment;
 import com.bw.movie.bean.BeanFindRecommendCinemas;
+import com.bw.movie.bean.BeanGeographicLocation;
 import com.bw.movie.contract.Contract;
 import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.AMapLocationUtil;
 import com.bw.movie.util.Api;
+import com.bw.movie.util.RxJavaUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,6 +80,10 @@ public class FragmentCinema extends BaseFragment {
         list_b.add("推荐影院");
         list_b.add("附近影院");
         list_b.add("区");
+
+//        mVpCinema.setCurrentItem(1);
+        //定位方法
+        getPositioning();
         return rootView;
     }
     //点击
@@ -85,34 +93,52 @@ public class FragmentCinema extends BaseFragment {
             case R.id.Cinema_Positioning://定位
                 Toast.makeText(getContext(), "已定位", Toast.LENGTH_SHORT).show();
                 //定位方法
-                AMapLocationUtil.getLoaction(new AMapLocationUtil.AMapInterface() {
-                    @Override
-                    public void getAMapLocation(AMapLocation aMapLocation) {
-                        if (aMapLocation != null) {
-                            if (aMapLocation.getErrorCode() == 0) {
-                                //可在其中解析amapLocation获取相应内容。
-                                String city = aMapLocation.getCity();
-                                String district = aMapLocation.getDistrict();
-                                String street = aMapLocation.getStreet();
-                                String streetNum = aMapLocation.getStreetNum();
-                                Log.i(TAG, "111111111getAMapLocation: " + aMapLocation.getCity());
-                                Toast.makeText(getContext(), "" + city + district + street + streetNum, Toast.LENGTH_SHORT).show();
-                                mCinemaText.setText(city + district + street + streetNum);
-                            } else {
-                                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                                Log.e("AmapError", "location Error, ErrCode:"
-                                        + aMapLocation.getErrorCode() + ", errInfo:"
-                                        + aMapLocation.getErrorInfo());
-                            }
-                        }
-                    }
-                });
+                getPositioning();
                 break;
             case R.id.Cinema_search://搜索
                 Toast.makeText(getContext(), "已搜索", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
+
+    private void getPositioning() {
+        AMapLocationUtil.getLoaction(new AMapLocationUtil.AMapInterface() {
+            @Override
+            public void getAMapLocation(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        //可在其中解析amapLocation获取相应内容。
+                        //纬度
+                        double latitude = aMapLocation.getLatitude();
+                        Log.i(TAG, "getAMapLocation纬度: "+latitude);
+                        //经度
+                        double longitude = aMapLocation.getLongitude();
+                        Log.i(TAG, "getAMapLocation经度: "+longitude);
+                        String city = aMapLocation.getCity();
+                        String district = aMapLocation.getDistrict();
+                        String street = aMapLocation.getStreet();
+                        String streetNum = aMapLocation.getStreetNum();
+                        Log.i(TAG, "111111111getAMapLocation: " + aMapLocation.getCity());
+                        //Toast.makeText(getContext(), "" + city + district + street + streetNum, Toast.LENGTH_SHORT).show();
+                        mCinemaText.setText(city + district + street + streetNum);
+                        //将经纬度存入bean
+                        RxJavaUtil.getInstance().getBeanGeographicLocation().setLatitude(latitude+"");
+                        RxJavaUtil.getInstance().getBeanGeographicLocation().setLongitude(longitude+"");
+                        //存入bean类
+                        BeanGeographicLocation beanGeographicLocation = new BeanGeographicLocation("", "");
+                        //用粘性事件传值
+                        EventBus.getDefault().postSticky(beanGeographicLocation);
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        Log.e("AmapError", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        });
+    }
+
     //数据
     @Override
     public void initData() {
@@ -122,7 +148,6 @@ public class FragmentCinema extends BaseFragment {
         mTabCinema.setupWithViewPager(mVpCinema);
         //预加载
         mVpCinema.setOffscreenPageLimit(3);
-
     }
     //释放
     @Override

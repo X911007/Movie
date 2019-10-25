@@ -30,32 +30,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MoviedetailspageActivity"></activity>
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.VideoSearchPageActivity" />
-        <activity android:name=".activity.RegisteredActivity" />
-        <activity android:name=".activity.ShowActivity">
+        <activity android:name=".activity.GuidePagesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LogInActivity" />
-        <!--地图  定位-->
+        <activity android:name=".activity.MineActivity" />
+        <activity android:name=".activity.SelectionActivity" />
+        <activity android:name=".activity.MoviedetailspageActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.VideoSearchPageActivity" />
+        <activity android:name=".activity.RegisteredActivity" />
+        <activity android:name=".activity.LogInActivity">
+
+        </activity>
+        <activity android:name=".activity.ShowActivity" /> <!-- 地图  定位 -->
         <service android:name="com.amap.api.location.APSService" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="b5102e708fe87413e5ed561311afcf42"></meta-data>
-        <!--微信-->
+            android:value="b5102e708fe87413e5ed561311afcf42" /> <!-- 微信 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:taskAffinity="net.sourceforge.simcpux"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

@@ -110,6 +110,8 @@
                 <android.support.design.widget.TabLayout
                     android:id="@+id/Moviedetailspage_tab"
                     android:layout_width="match_parent"
+                    app:tabBackground="@drawable/tab_label_back"
+                    app:tabTextColor="#fff"
                     android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
 
                 <android.support.v4.view.ViewPager

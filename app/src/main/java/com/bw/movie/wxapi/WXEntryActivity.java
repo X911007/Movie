@@ -2,10 +2,16 @@ package com.bw.movie.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.bw.movie.R;
+import com.bw.movie.activity.LogInActivity;
 import com.bw.movie.activity.ShowActivity;
+import com.bw.movie.util.Api;
 import com.bw.movie.util.App;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -19,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
  * function：微信登录
  */
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
+    private static final String TAG = "WXEntryActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 String code = ((SendAuth.Resp) baseResp).code;
+                Log.i(TAG, "1111111onResp: "+code);
+                //存入code
+                SharedPreferences sp = getSharedPreferences(Api.SP_SP, MODE_PRIVATE);
+                sp.edit().putString(Api.SP_CODE,code).commit();
                 //获取accesstoken
                 EventBus.getDefault().post(code);
                 //微信跳转

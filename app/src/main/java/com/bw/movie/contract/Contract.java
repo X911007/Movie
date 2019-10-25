@@ -25,6 +25,9 @@ public interface Contract {
         //登录
         public abstract void getLogin(Map<String, String> hmap);
 
+        //微信登录
+        public abstract void getWeChatBindingLogin(Map<String, String> wxmap);
+
         //注册
         public abstract void getRegistered(Map<String, String> hmap);
 
@@ -51,6 +54,22 @@ public interface Contract {
 
         //推荐影院
         public abstract void getFindRecommendCinemas(Map<String, String> hmap, Map<String, Integer> qmap);
+
+        //根据电影ID和影院ID查询电影排期列表
+        public abstract void getFindMovieSchedule(Map<String, Integer> qmap);
+
+        //查询附近影院
+        public abstract void getFindNearbyCinemas(Map<String, String> hmap, Map<String, Object> qmap);
+
+        //根据影厅id 查询座位信息
+        public abstract void getFindSeatInfo(Map<String, Integer> qmap);
+
+        //购票下单
+        public abstract void getBuyMovieTickets(Map<String, String> hmap,Map<String, Object> qmap);
+
+        //支付
+        public abstract void getPay(Map<String, String> hmap,Map<String, Object> qmap);
+
 
     }
 

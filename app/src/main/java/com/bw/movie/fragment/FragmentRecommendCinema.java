@@ -1,8 +1,10 @@
 package com.bw.movie.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.SelectionActivity;
 import com.bw.movie.adapter.RecommendCinemaRecyclerView;
 import com.bw.movie.base.BaseFragment;
 import com.bw.movie.bean.BeanFindRecommendCinemas;
 import com.bw.movie.contract.Contract;
 import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.Api;
+import com.bw.movie.util.RxJavaUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +90,16 @@ public class FragmentRecommendCinema extends BaseFragment implements Contract.Ho
             @Override
             public void onRecommendCinemaItem(BeanFindRecommendCinemas.ResultBean bean) {
                 //获取影院id
-                Toast.makeText(getContext(), ""+bean.getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), ""+bean.getId(), Toast.LENGTH_SHORT).show();
+                /*//已选择的电影
+                RxJavaUtil.getInstance().getMovie().setCinemaId(bean.getId());
+                //判空
+                int movieId = RxJavaUtil.getInstance().getMovie().getMovieId();
+                int cinemaId = RxJavaUtil.getInstance().getMovie().getCinemaId();
+                if (movieId!=0&&cinemaId!=0) {
+                    Toast.makeText(getContext(), "去选座", Toast.LENGTH_SHORT).show();
+                    getContext().startActivity(new Intent(getContext(), SelectionActivity.class));
+                }*/
             }
         });
     }

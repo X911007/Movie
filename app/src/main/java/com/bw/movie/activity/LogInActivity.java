@@ -1,8 +1,10 @@
 package com.bw.movie.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.style.WrapTogetherSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.bw.movie.presenter.Presenter;
 import com.bw.movie.util.Api;
 import com.bw.movie.util.App;
 import com.bw.movie.util.EncryptUtil;
+import com.bw.movie.util.RxJavaUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.util.HashMap;
@@ -52,6 +55,11 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
     private Presenter presenter1;
     private Unbinder bind;
     private Map<String, String> hmap = new HashMap<>();
+    private static final String TAG = "LogInActivity";
+    private String name;
+    private String pwd;
+    private SharedPreferences.Editor edit;
+    private SharedPreferences sp;
 
     //布局
     @Override
@@ -68,6 +76,15 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
         /*hmap.put(Api.URL_EMAIL, Api.URL_EMAIL_S);
         hmap.put(Api.URL_PWD, Api.URL_PWD_S);
         presenter1.getLogin(hmap);*/
+        //获取SharedPreferences
+        sp = getSharedPreferences(Api.SP_SP,MODE_PRIVATE);
+        edit = sp.edit();
+        //二次进入判断
+        boolean aBoolean = sp.getBoolean(Api.SP_IDENTIFICATION, false);
+        if (aBoolean){
+            startActivity(new Intent(LogInActivity.this, ShowActivity.class));
+            finish();
+        }
     }
 
     //点击
@@ -81,8 +98,8 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
                 finish();
                 break;
             case R.id.login://登录
-                String name = mLoginName.getText().toString().trim();
-                String pwd = mLoginPwd.getText().toString().trim();
+                name = mLoginName.getText().toString().trim();
+                pwd = mLoginPwd.getText().toString().trim();
                 if (TextUtils.isEmpty(name)) {
                     Toast.makeText(this, "账号不能为空", Toast.LENGTH_SHORT).show();
                     return;
@@ -126,17 +143,28 @@ public class LogInActivity extends BaseActivity implements Contract.HomeView {
     @Override
     public void initData() {
 
-
     }
 
     //成功
     @Override
     public void onSuccess(Object object) {
         BeanLogin beanLogin = (BeanLogin) object;
-        Log.i("aaa", "onSuccrss: " + beanLogin.getMessage());
+        Log.i("aaa", "1111111onSuccrss: " + beanLogin.getMessage());
+        BeanLogin.ResultBean result = beanLogin.getResult();
+        //UserId
+        int userId = result.getUserId();
+        Log.i(TAG, "onSuccess: userId"+userId);
+        String sessionId = result.getSessionId();
+        //sessionId
+        Log.i(TAG, "onSuccess: sessionId"+sessionId);
+        //当前用户存入sp
         Toast.makeText(this, "" + beanLogin.getMessage(), Toast.LENGTH_SHORT).show();
         if ("0000".equals(beanLogin.getStatus())) {
             startActivity(new Intent(LogInActivity.this, ShowActivity.class));
+            edit.putBoolean(Api.SP_IDENTIFICATION,true)
+                    .putString(Api.SP_USERID,userId+"")
+                    .putString(Api.SP_SESSIONID,sessionId)
+                    .commit();
             finish();
         }
     }
