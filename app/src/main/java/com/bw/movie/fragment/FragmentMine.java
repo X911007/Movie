@@ -218,10 +218,10 @@ public class FragmentMine extends BaseFragment implements Contract.HomeView {
         Log.i(TAG, "s2onSuccess: "+s2);
         //微信userId
         int userId = beanWeChatBindingLoginResult.getUserId();
-        Log.i(TAG, "userId: "+userId);
+        Log.i(TAG, "userIduserId: "+userId);
         //微信sessionId
         String sessionId = beanWeChatBindingLoginResult.getSessionId();
-        Log.i(TAG, "sessionId: "+sessionId);
+        Log.i(TAG, "sessionIdsessionId: "+sessionId);
         //存入SharedPreferences
         edit.putString(Api.SP_USERID,userId+"");
         edit.putString(Api.SP_SESSIONID,sessionId);

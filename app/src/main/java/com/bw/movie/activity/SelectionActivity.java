@@ -310,8 +310,6 @@ public class SelectionActivity extends BaseActivity implements Contract.HomeView
             mSelectionMoviehallList.setAdapter(selectionMoviehallList);
             //点击选择影厅条目
             selectionMoviehallList.setCallBackSelectionMoviehall(new SelectionMoviehallList.CallBackSelectionMoviehall() {
-
-
                 @Override
                 public void onSelectionMoviehall(BeanFindMovieSchedule.ResultBean bean) {
                     //已选择影厅
@@ -319,8 +317,10 @@ public class SelectionActivity extends BaseActivity implements Contract.HomeView
 
                     //userid
                     String userid = sp.getString(Api.SP_USERID, "");
+                    Log.i(TAG, "useridonSelectionMoviehall: "+userid);
                     //sessionid
                     String sessionid = sp.getString(Api.SP_SESSIONID, "");
+                    Log.i(TAG, "sessionidonSelectionMoviehall: "+sessionid);
                     //获取排期时间
                     int id = bean.getId();
                     String encryption = "";

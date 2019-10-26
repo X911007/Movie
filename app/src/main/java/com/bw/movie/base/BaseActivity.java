@@ -33,12 +33,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             initData();
         }
 
-        /*//判断是否是6.0以上，一般在oncreate进行后调用
+        //判断是否是6.0以上，一般在oncreate进行后调用
         if (Build.VERSION.SDK_INT >= 23) {//6.0才用动态权限
             initPermission();
-        }*/
+        }
     }
-    /*
     //初始化权限
     private void initPermission() {
         mPermissionList.clear();//清空没有通过的权限
@@ -76,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    *//**
+    /**
      * 不再提示权限时的展示对话框
      *//*
     private void showPermissionDialog() {

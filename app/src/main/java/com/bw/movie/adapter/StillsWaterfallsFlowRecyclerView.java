@@ -21,13 +21,13 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 /**
  * author: Xuexiandong
  * data: 2019/10/17 19:19:01
- * function：剧照适配器   网格
+ * function：剧照适配器   瀑布流
  */
-public class StillsRecyclerView extends RecyclerView.Adapter<StillsRecyclerView.StillsViewHolder> {
+public class StillsWaterfallsFlowRecyclerView extends RecyclerView.Adapter<StillsWaterfallsFlowRecyclerView.StillsViewHolder> {
     private List<String> list;
     private Context context;
 
-    public StillsRecyclerView(List<String> list, Context context) {
+    public StillsWaterfallsFlowRecyclerView(List<String> list, Context context) {
         this.list = list;
         this.context = context;
     }
